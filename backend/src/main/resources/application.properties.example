@@ -1,0 +1,55 @@
+spring.application.name=backend-java
+
+# Server Configuration
+server.port=8080
+
+# MySQL Database Configuration
+# SECURITY NOTE: credentials are read from environment variables with local-dev fallbacks.
+# In production, ALWAYS set DB_USERNAME / DB_PASSWORD (and MAIL_PASSWORD) as real env vars
+# instead of relying on the inline fallbacks below.
+spring.datasource.url=jdbc:mysql://localhost:3306/eduai_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata
+spring.datasource.username=${DB_USERNAME:root}
+spring.datasource.password=${DB_PASSWORD}
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# JPA / Hibernate Configuration
+spring.jpa.hibernate.ddl-auto=update
+
+spring.jpa.show-sql=false
+
+# Keeps the DB session open while serializing lazy relations (e.g. Assessment -> Questions)
+spring.jpa.open-in-view=true
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+# Mail Configuration (Gmail SMTP)
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=${MAIL_USERNAME:eduai.alerts2026@gmail.com}
+spring.mail.password=${MAIL_PASSWORD}
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# File Upload Configuration
+# Raised so proctoring screen recordings (webm) can be uploaded; individual
+# recording size is additionally capped by proctoring.max-recording-mb.
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=220MB
+spring.servlet.multipart.max-request-size=230MB
+file.upload-dir=uploads
+
+# --- Proctoring / Secure Test Environment Configuration ---
+# Number of CRITICAL violations after which a test attempt is force-terminated
+proctoring.max-violations=5
+# WARNING-level violations that produce an on-screen warning before termination counts begin
+proctoring.warning-threshold=1
+proctoring.recording-dir=uploads/proctoring
+proctoring.max-recording-mb=200
+
+# Python AI microservices
+# Placement predictor (Flask, port 5001). The Resume analyzer stays on port 5000.
+flask.placement.url=http://localhost:5001/predict
+
+# Logging Configuration
+logging.level.org.hibernate.SQL=INFO
+logging.level.org.hibernate.orm.jdbc.bind=INFO

@@ -1,0 +1,6 @@
+flask
+sentence-transformers
+pypdf
+python-docx
+scikit-learn
+numpy
